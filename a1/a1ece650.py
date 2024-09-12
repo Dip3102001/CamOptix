@@ -78,9 +78,7 @@ class LineSegment():
             else: return None;
         else:
             x = (c2 - c1)/(m1 - m2);
-            y = (m1 * c2 - c1 * m2)/(m1 - m2);
-        
-            print(x,y);
+            y = (m1 * c2 - c1 * m2)/(m1 - m2);        
         try:
             x = x if not x.is_integer() else int(x);
         except AttributeError as a:
@@ -199,8 +197,6 @@ class Map():
             V_index_inv[items] = idx;
 
         intersections = list(V.keys());
-
-        print(intersections);
 
         for i in range(0,len(intersections)):
             point_1 = intersections[i];
