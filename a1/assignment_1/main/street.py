@@ -1,4 +1,4 @@
-from linesegment import LineSegment;
+from assignment_1.main.linesegment import LineSegment;
 
 class Street():
     def __init__(self,name,path):

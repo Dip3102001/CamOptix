@@ -1,7 +1,7 @@
-from street import Street;
-from linesegment import LineSegment;
-from errors import *;
-from utils import *;
+from assignment_1.main.street import Street;
+from assignment_1.main.linesegment import LineSegment;
+from assignment_1.main.errors import *;
+from assignment_1.main.utils import *;
 
 class Map():
     def __init__(self):
@@ -88,3 +88,7 @@ class Map():
 
 
         return V_index,E;
+
+if __name__ == "__main__":
+    map = Map();
+    print("map is created..");
