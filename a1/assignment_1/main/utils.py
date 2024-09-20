@@ -8,8 +8,7 @@ def parser(line):
     on = re.findall(r"(\".*\")",line);
     data = re.findall(r"(\(\s*-?\d+\s*,\s*-?\d+\s*\))",line);
 
-    if on is not None:
-        on = on.lower();
+    on = [_.lower() for _ in on];
 
     return ops,on,data;
 
