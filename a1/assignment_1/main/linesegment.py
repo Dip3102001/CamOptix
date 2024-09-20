@@ -12,7 +12,7 @@ class LineSegment():
     def isEqual(self,point):
         x,y = point;
         if self.m is not None:
-            return y == self.m * x + self.c;
+            return round(y,6) == round(self.m * x + self.c,6);
         else:
             x1,y1 = self.st;
             x2,y2 = self.en;
@@ -82,9 +82,6 @@ class LineSegment():
         else:
             x = (c2 - c1)/(m1 - m2);
             y = (m1 * c2 - c1 * m2)/(m1 - m2);
-        
-        x = round(x,2);
-        y = round(y,2);
         
         return (x,y) if self.isOnLineSegment((x,y)) and ano_line_seg.isOnLineSegment((x,y)) else None;
 

@@ -14,7 +14,7 @@ class Map():
                 streetPresent = True;
         
         if streetPresent:
-            raise ExpectedStreetName();
+            raise StreetAlreadyPresent();
         else:
             new_street = Street(street_name,street_coords);
             self.streets.append(new_street);

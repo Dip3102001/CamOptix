@@ -1,0 +1,8 @@
+add "WS" (a,0) ( 4,4)
+add "AS" ( 1 , 1 ) ( 3 ,3) 
+add "SC" (0,4) (4,0)
+gg
+rm "TD"
+rm "AS"
+gg
+rm "hello

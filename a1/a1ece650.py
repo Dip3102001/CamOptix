@@ -43,7 +43,7 @@ def main():
 
         except InvalidInput as e:
             print(e,file=sys.stderr);
-            exit(1);
+            continue;
         
         except (ExpectedStreetName,ExpectedCoordinate) as e:
             print(e,file=sys.stderr);

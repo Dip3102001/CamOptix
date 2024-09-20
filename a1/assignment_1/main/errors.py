@@ -28,7 +28,7 @@ class StreetAlreadyPresent(Exception):
 
 class InvalidInput(Exception):
     def __init__(self):
-        self.message = "Invalid input provided";
+        self.message = "Error: Invalid input provided";
 
     def __str__(self):
         return self.message;
