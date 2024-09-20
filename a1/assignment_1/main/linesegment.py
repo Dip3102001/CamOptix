@@ -83,16 +83,8 @@ class LineSegment():
             x = (c2 - c1)/(m1 - m2);
             y = (m1 * c2 - c1 * m2)/(m1 - m2);
         
-        try:
-            x = x if not x.is_integer() else int(x);
-        except AttributeError as a:
-            pass
-
-        try:
-            y = y if not y.is_integer() else int(y);
-        except AttributeError as a:
-            pass
-        
+        x = round(x,2);
+        y = round(y,2);
         
         return (x,y) if self.isOnLineSegment((x,y)) and ano_line_seg.isOnLineSegment((x,y)) else None;
 
