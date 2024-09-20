@@ -15,12 +15,12 @@ def parser(line):
 def strToTup(str):
     pattern = r"\s*(-?\d+)\s*";
     nums = re.findall(pattern,str);
-    return (int(nums[0]),int(nums[1]));
+    return (float(nums[0]),float(nums[1]));
 
 def formattedPrinting(V,E):
     print("V = {");
     for key,val in V.items():
-        print(f"  {key}:  {val}");
+        print(f"  {key}:  ({val[0]:.2f},{val[1]:.2f})");
     print("}");
 
     print("E = {");

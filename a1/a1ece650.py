@@ -42,18 +42,17 @@ def main():
                 formattedPrinting(V,E);
 
         except InvalidInput as e:
-            print(e);
+            print(e,file=sys.stderr);
             exit(1);
         
         except (ExpectedStreetName,ExpectedCoordinate) as e:
-            print(e);
+            print(e,file=sys.stderr);
             continue;
     
         except (StreetNotFound,StreetAlreadyPresent) as e:
-            print(e);
+            print(e,file=sys.stderr);
             continue;
     
-    print("Finished reading input");
     sys.exit(0);
 
 if __name__ == "__main__":
