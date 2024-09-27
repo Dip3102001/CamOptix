@@ -15,7 +15,7 @@ endif()
 
 # create the main executable
 ## add additional .cpp files if needed
-add_executable(ece650-a2 ece650-a2.cpp )
+add_executable(ece650-a2 ece650-a2.cpp Graph.cpp InvalidInputException.cpp Main.cpp NoShortestPathExist.cpp Pair.cpp Parser.cpp)
 
 # create the executable for tests
-add_executable(tests test.cpp)
+# add_executable(tests test.cpp)
