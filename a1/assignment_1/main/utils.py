@@ -41,8 +41,14 @@ def formattedPrinting(V,E):
     print("}");
 
     print("E = {");
-    for edge in E:
+
+    E = list(E);
+
+    for edge in E[:-1]:
         print(f"  <{edge[0]},{edge[1]}>,");
+    else:
+        if len(E) > 0:
+            print(f"  <{E[-1][0]},{E[-1][1]}>");
     print("}");
 
 def plot(V,E):
