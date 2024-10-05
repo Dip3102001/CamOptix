@@ -6,7 +6,7 @@
 class Parser{
     private:
         std::string *input;
-
+        
     public:
         Parser(std::string input[]);
         int parse_line_1();

@@ -4,6 +4,7 @@
 #include<sstream>
 
 #include "Main.hpp"
+#include "InvalidEdgeInputException.hpp"
 
 int main(int argc, char** argv) {
     std::string input;    
@@ -11,15 +12,19 @@ int main(int argc, char** argv) {
     int at = 0;
 
     while (!std::cin.eof()) {        
-        std::getline(std::cin, input);
+        try{
+            std::getline(std::cin, input);
 
-        buffer[at++] = input;
+            buffer[at++] = input;
 
-        if(at == 3){
-            Main m(buffer);
-            m.parse_line();
-            m.print_output();
-            at = 0;       
+            if(at == 3){
+                Main m(buffer);
+                m.parse_line();
+                m.print_output();
+                at = 0;       
+            }
+        }catch(InvalidEdgeInputException e){
+            std::cout<<e.what()<<std::endl;
         }
     }
 

@@ -1,6 +1,7 @@
 #include "Graph.hpp"
 #include "InvalidInputException.hpp"
 #include "NoShortestPathExist.hpp"
+#include "InvalidEdgeInputException.hpp"
 
 #include<queue>
 #include<stack>
@@ -46,19 +47,19 @@ std::vector<int> Graph::__bfs__(int from){
     std::vector<bool> isVisited(this->V,false);
     std::vector<int> p(this->V,-1);
 
-    q.push(from);
     isVisited[from] = true;
+    q.push(from);
     p[from] = from;
     
     while(q.size() != 0){
         int at = q.front();
-        isVisited[at] = true;
         q.pop();
-
+        
         for(int n : this->G[at]){
             if(!isVisited[n]){
-                p[n] = at;
+                isVisited[n] = true; 
                 q.push(n);            
+                p[n] = at;
             }
         }
     }
