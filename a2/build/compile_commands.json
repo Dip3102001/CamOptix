@@ -40,5 +40,11 @@
   "command": "/usr/bin/clang++   -std=c++11 -Wall  -g -o CMakeFiles/ece650-a2.dir/Parser.cpp.o -c /home/dv9patel/dv9patel/a2/Parser.cpp",
   "file": "/home/dv9patel/dv9patel/a2/Parser.cpp",
   "output": "CMakeFiles/ece650-a2.dir/Parser.cpp.o"
+},
+{
+  "directory": "/home/dv9patel/dv9patel/a2/build",
+  "command": "/usr/bin/clang++   -std=c++11 -Wall  -g -o CMakeFiles/ece650-a2.dir/InvalidEdgeInputException.cpp.o -c /home/dv9patel/dv9patel/a2/InvalidEdgeInputException.cpp",
+  "file": "/home/dv9patel/dv9patel/a2/InvalidEdgeInputException.cpp",
+  "output": "CMakeFiles/ece650-a2.dir/InvalidEdgeInputException.cpp.o"
 }
 ]
