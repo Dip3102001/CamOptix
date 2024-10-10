@@ -16,10 +16,11 @@ endif()
 
 # create the main executable
 ## add additional .cpp files if needed
-add_executable(ece650-a2 ece650-a2.cpp )
-add_executable(ece650-a3 ece650-a3.cpp )
+add_executable(ece650-a2 ece650-a2.cpp Graph.cpp InvalidInputException.cpp Main.cpp NoShortestPathExist.cpp Pair.cpp Parser.cpp InvalidEdgeInputException.cpp)
+add_executable(nrand nrand.cpp)
+# add_executable(ece650-a3 ece650-a3.cpp )
 
 # create the executable for tests
-add_executable(tests test.cpp)
-install(PROGRAMS ece650-a1.py DESTINATION bin)
-install(TARGETS ece650-a2 ece650-a3 RUNTIME DESTINATION bin)
+# add_executable(tests test.cpp)
+# install(PROGRAMS ece650-a1.py DESTINATION bin)
+# install(TARGETS ece650-a2 ece650-a3 RUNTIME DESTINATION bin)
