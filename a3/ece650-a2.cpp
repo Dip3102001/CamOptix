@@ -14,16 +14,16 @@ int main(int argc, char** argv) {
     while (!std::cin.eof()) {        
         try{
             std::getline(std::cin, input);
-
             buffer[at++] = input;
-
             if(at == 3){
                 Main m(buffer);
                 m.parse_line();
                 m.print_output();
                 at = 0;       
+            }else{                
+                std::cout<<" "<<input<<std::endl;
             }
-        }catch(InvalidEdgeInputException e){
+        }catch(InvalidEdgeInputException &e){
             std::cout<<e.what()<<std::endl;
         }
     }

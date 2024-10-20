@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 import sys;
+import io;
 
 from assignment_1.main.utils import *;
 from assignment_1.main.map import Map;
 from assignment_1.main.errors import *;
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='ascii')
 
 def main():
     map = Map();
@@ -12,7 +15,7 @@ def main():
         line = sys.stdin.readline();
         if line == "":
             break;
-        
+
         try:
             ops,on,data = parser(line);
             if len(ops) == 0 or ops[0] not in ["gg","mod","add","rm"]:
@@ -39,7 +42,8 @@ def main():
                 map.remove(on);
             elif ops == "gg":
                 V,E = map.gg();
-                formattedPrinting(V,E);
+                formattedPrinting(V,E,sys.stdout);
+                # formattedPrinting(V,E,sys.stderr);
 
         except InvalidInput as e:
             print(e,file=sys.stderr);

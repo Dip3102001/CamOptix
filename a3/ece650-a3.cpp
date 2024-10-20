@@ -55,7 +55,7 @@ int execute(const char* program, int mod){
     return -1;
 }
 
-string execute_assignment(const char* program, string input){
+string execute_program(const char* program, string input){
     int std_in[2];
     int std_out[2];
 
@@ -93,15 +93,65 @@ string execute_assignment(const char* program, string input){
         char buffer[128];
         int byte_read;
 
+        int status;
+        waitpid(pid,&status,0);
+
         ostringstream oss;
 
-        while((byte_read = read(std_out[0],buffer,sizeof(buffer)-1)>0)){
+        while((byte_read = read(std_out[0],buffer,sizeof(buffer)-1))>0){
             buffer[byte_read] = '\0';
             oss<<buffer;
         }
 
+        close(std_out[0]);
+
         return oss.str();
     }
+    return 0;
+}
+
+int execute_plot(string input){
+    char *program = (char*)"../plot.py";
+
+    int std_in[2];
+
+    if(pipe(std_in) == -1){
+        cerr<<"Error : Pipe creation failed..."<<endl;
+    }
+
+    pid_t pid = fork();
+
+    if(pid < 0){
+        cerr<<"Error : Process creation failed..."<<endl;
+    }else if(pid == 0){
+        // DISPLAY environment 
+        setenv("DISPLAY",":0",1);
+
+        // child process
+        dup2(std_in[0],STDIN_FILENO);
+        close(std_in[1]);
+        
+        char* args[2];
+
+        args[0] = (char*)program;
+        args[1] = NULL;
+
+        execv(args[0],args);
+    }else{
+        // parent process
+        close(std_in[0]);
+        
+        const char *cinput = input.c_str();
+        
+        write(std_in[1],cinput,strlen(cinput));
+        close(std_in[1]);
+        
+        int status;
+        waitpid(pid,&status,0);
+
+        return status;
+    }
+    return 0;
 }
 
 class NoSupportedArgumentException : exception{
@@ -123,7 +173,7 @@ class Argument{
             args["c"] = 20;
 
             int opt;
-            while(opt = getopt(argc, argv, "snlc")){
+            while((opt = getopt(argc, argv, "s:n:l:c:")) != -1){
                 switch(opt){
                     case 's':
                         args["s"] = atoi(optarg);
@@ -170,15 +220,20 @@ class LineSegment{
         double m;
         double c;
 
+        double __round__(double x){
+            return round((x * 1e2)) * 1e-2;
+        }
+
     public:
         LineSegment(pair<int,int> st, pair<int,int> en){
             this->st = st;
             this->en = en;
 
             this->m = (this->st.first == this->en.first)? INFINITY : 
-            (this->st.second - this->en.second)/(this->st.first - this->en.first);
+            (double)(this->st.second - this->en.second)/(double)(this->st.first - this->en.first);
 
-            this->c = (this->st.first == this->en.first)? INFINITY : this->st.second - this->m * this->st.first;
+            this->c = (this->st.first == this->en.first)? INFINITY : 
+            this->st.second - this->m * this->st.first;
         }
 
         bool isIntersect(LineSegment l0){
@@ -188,7 +243,7 @@ class LineSegment{
             }else{
                 double x,y;
 
-                if(this->m == INFINITY || l0.c == INFINITY){
+                if(this->m == INFINITY || l0.m == INFINITY){
                     if(this->m == INFINITY){
                         x = this->st.first;
                         y = l0.m * x + l0.c;
@@ -197,22 +252,25 @@ class LineSegment{
                         y = this->m * x + this->c;
                     }
                 }else{
-                    x = - (this->c - l0.c) / (this->m - l0.m);
+                    x = - ((this->c - l0.c) / (this->m - l0.m));
                     y = this->m * x + this->c; 
                 }
 
-                return this->isBetween(x,y) && l0.isBetween(x,y);
+                x = __round__(x);
+                y = __round__(y);
+
+                return this->isBetween(x,y) || l0.isBetween(x,y);
             }
         }
 
-        bool isBetween(int x, int y){
-            int x1 = (st.first < en.first) ? st.first : en.first;
-            int x2 = (st.first < en.first) ? en.first : st.first;
+        bool isBetween(double x, double y){
+            double x1 = (st.first < en.first) ? st.first : en.first;
+            double x2 = (st.first < en.first) ? en.first : st.first;
 
-            int y1 = (st.second < en.second) ? st.second : en.second;
-            int y2 = (st.second < en.second) ? en.second : st.second;
+            double y1 = (st.second < en.second) ? st.second : en.second;
+            double y2 = (st.second < en.second) ? en.second : st.second;
         
-            return ((x1 <= x && x <= x2) && (y1 <= y && y <= y2));  
+            return ((x1 < x && x < x2) && (y1 < y && y < y2));  
         }
 };
 
@@ -224,9 +282,9 @@ class Street{
 
         bool __intersect__(){
             // code for checking intersection will goes here..
-            for(int i=0;i<this->ll.size()-1;i++){
+            for(int i=0;i<(int)this->ll.size()-1;i++){
                 LineSegment l1 = LineSegment(ll.at(i),ll.at(i+1));
-                for(int j=i+1;i<this->ll.size()-1;j++){
+                for(int j=i+1;j<(int)this->ll.size()-1;j++){
                     LineSegment l2 = LineSegment(ll.at(j),ll.at(j+1));
                     if(l1.isIntersect(l2))
                         return true;
@@ -240,6 +298,8 @@ class Street{
             ll.push_back(point);
             bool result = __intersect__();
             ll.pop_back();
+            
+            return !result;
         }
 
     public:
@@ -249,15 +309,17 @@ class Street{
         }
 
         bool add(pair<int,int> point){
-            if(!addCheck(point)) return false;
-            else ll.push_back(point);
+            if(addCheck(point)) ll.push_back(point);
+            else return false;
             return true;
         }
 
         string str(){
             string str = "\""+this->name+"\"" + " ";
             
-            for(auto[first, second] : this->ll){
+            for(pair<int,int > p : this->ll){
+                int first = p.first;
+                int second = p.second;
                 str += "("+to_string(first)+","+to_string(second)+")";
                 str += " ";
             }
@@ -269,7 +331,7 @@ class Street{
 class ExhustedIterationException : public exception{
     public:
         const char* what() const noexcept override{
-            return "Error : Exhusted 15 consequtative trials for street-coordinate assignment..";
+            return "Error : Exhusted 25 consequtative trials for street-coordinate assignment..";
         }
 };
 
@@ -296,12 +358,14 @@ class StreetBuilder{
             for(int i=0;i<this->number_of_line_segment+1;i++){
                 int count = 0;
 
-                while(!strt->add({getRandom(this->c),getRandom(this->c)}) && count < 15){
+                while(!strt->add({getRandom(this->c),getRandom(this->c)}) && count < 25){
                     count++;
                 }
 
-                if(count < 15) continue;
-                else throw ExhustedIterationException();
+                if(count < 25) continue;
+                else{
+                    throw ExhustedIterationException();
+                } 
             }
 
             return *strt;
@@ -321,33 +385,38 @@ class Map{
         }
 
         void driver(){ 
-
             ostringstream oss;
-            for(int i=0;i<streets.size();i++){
+            ostringstream oss_1;
+
+            for(int i=0;i<(int)streets.size();i++){
                 oss<<"add "<<streets[i].str()<<endl;
             }
             oss<<"gg"<<endl;
 
             //establish IPC to assignment-1 
-            string resp = execute_assignment("./ece650-a1",oss.str());
-
-            // print output from assignment-2
-            string output = execute_assignment("./build/ece-650-a2",resp);
-
-            cout<<output;
+            string resp = execute_program("../ece650-a1.py",oss.str());            
+            
+            string path;
+            getline(cin,path);
+            oss_1<<resp<<path<<endl;
+            
+            // establish IPC to assignment-2
+            string output = execute_program("./ece650-a2",oss_1.str());
+            cout<<output<<endl;
         }
 };
 
 int main (int argc, char **argv) {
     try{
-        Argument argument = Argument(argc, argv);
-        Map m = Map(argument);
+        Argument argument(argc, argv);
+        Map m(argument);
         m.driver();
-    }catch(ExhustedIterationException e){
+    }catch(ExhustedIterationException &e){
         cerr<<e.what()<<endl;
-    }catch(NoSupportedArgumentException e){
+    }catch(NoSupportedArgumentException &e){
         cerr<<e.what()<<endl;
     }
+    
 
     return 0;
 }

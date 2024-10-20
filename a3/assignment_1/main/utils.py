@@ -34,19 +34,19 @@ def strToTup(str):
     nums = re.findall(pattern,str);
     return (float(nums[0]),float(nums[1]));
 
-def formattedPrinting(V,E):
-    print(f"V {len(V)}");
+def formattedPrinting(V,E,file):
+    print(f"V {len(V)}",file=file);
     
 
     E = list(E);
     
-    print("E {",end="");
+    print("E {",end="",file=file);
     for edge in E[:-1]:
-        print(f"<{edge[0]+1},{edge[1]+1}>,",end="");
+        print(f"<{edge[0]+1},{edge[1]+1}>,",end="",file=file);
     else:
         if len(E) > 0:
-            print(f"<{E[-1][0]+1},{E[-1][1]+1}>",end="");
-    print("}");
+            print(f"<{E[-1][0]+1},{E[-1][1]+1}>",end="",file=file);
+    print("}",file=file);
 
 def plot(V,E):
     pass

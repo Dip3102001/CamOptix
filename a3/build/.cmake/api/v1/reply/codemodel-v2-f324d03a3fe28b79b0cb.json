@@ -6,7 +6,7 @@
 			[
 				{
 					"build" : ".",
-					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"jsonFile" : "directory-.-f5ebdc15457944623624.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "2.8"
@@ -16,11 +16,12 @@
 					"targetIndexes" : 
 					[
 						0,
-						1
+						1,
+						2
 					]
 				}
 			],
-			"name" : "Debug",
+			"name" : "",
 			"projects" : 
 			[
 				{
@@ -32,7 +33,8 @@
 					"targetIndexes" : 
 					[
 						0,
-						1
+						1,
+						2
 					]
 				}
 			],
@@ -41,14 +43,21 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "ece650-a2::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ece650-a2-Debug-e97101bc7db755136213.json",
+					"jsonFile" : "target-ece650-a2-0c6864c0f56e204b01ee.json",
 					"name" : "ece650-a2",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
+					"id" : "ece650-a3::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ece650-a3-371b79a40e723fc53fb2.json",
+					"name" : "ece650-a3",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
 					"id" : "nrand::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-nrand-Debug-98cc64d99aca350ee63a.json",
+					"jsonFile" : "target-nrand-ddc24fb7f7c068a30da3.json",
 					"name" : "nrand",
 					"projectIndex" : 0
 				}
@@ -58,12 +67,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/home/dv9patel/dv9patel/a3/build",
-		"source" : "/home/dv9patel/dv9patel/a3"
+		"build" : "/home/destro/Documents/Project/dv9patel/a3/build",
+		"source" : "/home/destro/Documents/Project/dv9patel/a3"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 5
+		"minor" : 3
 	}
 }
