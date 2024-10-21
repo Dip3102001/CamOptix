@@ -1,5 +1,0 @@
-/home/destro/Documents/Project/dv9patel/a3/build/CMakeFiles/ece650-a2.dir
-/home/destro/Documents/Project/dv9patel/a3/build/CMakeFiles/nrand.dir
-/home/destro/Documents/Project/dv9patel/a3/build/CMakeFiles/ece650-a3.dir
-/home/destro/Documents/Project/dv9patel/a3/build/CMakeFiles/edit_cache.dir
-/home/destro/Documents/Project/dv9patel/a3/build/CMakeFiles/rebuild_cache.dir

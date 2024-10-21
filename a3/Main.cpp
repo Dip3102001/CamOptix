@@ -46,12 +46,16 @@ void Main::print_output(){
         std::vector<int> path = 
             g.find_path(this->source_to_destination.first,this->source_to_destination.second);
 
+        std::ostringstream oss;
+
         for(int i=0;i<path.size();i++){
             if(i != path.size() -1)
-                std::cout<<path[i]+1<<"-";
+                oss<<path[i]+1<<"-";
             else 
-                std::cout<<path[i]+1<<std::endl;
+                oss<<path[i]+1<<std::endl;
         }
+
+        std::cout<<oss.str();
 
     }catch(InvalidInputException e){
         std::cout<<e.what()<<std::endl;
