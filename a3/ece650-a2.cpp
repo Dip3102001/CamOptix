@@ -6,22 +6,31 @@
 #include "Main.hpp"
 #include "InvalidEdgeInputException.hpp"
 
+
+bool startWith(std::string input, char ch){
+    return input[0] == ch;
+}
+
 int main(int argc, char** argv) {
     std::string input;    
     std::string buffer[3];
-    int at = 0;
 
-    while (!std::cin.eof()) {        
+    while (!std::cin.eof()) {
         try{
-            std::getline(std::cin, input);
-            buffer[at++] = input;
-            if(at == 3){
+            std::getline(std::cin,input);
+
+            if(startWith(input,'V')){
+                buffer[0] = input;
+                std::cout<<input<<std::endl;
+            }else if(startWith(input,'E')){
+                buffer[1] = input;
+                std::cout<<input<<std::endl;
+            }else if(startWith(input,'s')){
+                buffer[2] = input;
                 Main m(buffer);
                 m.parse_line();
                 m.print_output();
-                at = 0;       
-            }else{                
-                std::cout<<" "<<input<<std::endl;
+                std::cout.flush();
             }
         }catch(InvalidEdgeInputException &e){
             std::cout<<e.what()<<std::endl;
