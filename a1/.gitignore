@@ -46,7 +46,7 @@ coverage.xml
 *.pot
 
 # testing
-*.txt
+input.txt
 
 # Sphinx documentation
 docs/_build/
