@@ -1,11 +1,14 @@
 #include<cstdio>
 
 #include <iostream>
-#include <unistd.h>
+
 #include <csignal>
 
 #include <cstring>
 #include <vector>
+
+#include <sys/wait.h>
+#include <unistd.h>
 
 using namespace std;
 
@@ -19,9 +22,16 @@ void signalHandler(int signal){
 }
 
 
+void childHandler(int signal){
+    for(pid_t child : child_process)
+        kill(child,SIGTERM);
+    exit(signal);
+}
+
 int main (int argc, char **argv) {
 
     signal(SIGINT, signalHandler);
+    signal(SIGCHLD, childHandler);
 
     string input;
 
@@ -49,6 +59,7 @@ int main (int argc, char **argv) {
             args[argc] = NULL;
 
             execv(args[0],args);
+            exit(1);
         }else{
 
             int ass_1_pipe[2];
@@ -71,10 +82,11 @@ int main (int argc, char **argv) {
                     close(ass_1_pipe[0]);
 
                     char *args[2];
-                    args[0] = (char*)"../ece650-a1.py";
+                    args[0] = (char*)"./ece650-a1.py";
                     args[1] = NULL;
 
                     execv(args[0],args);
+                    exit(1);
                 }else{
                     pid_t pid_3 = fork();
 
@@ -93,8 +105,8 @@ int main (int argc, char **argv) {
                         args[1] = NULL;
 
                         execv(args[0],args);
+                        exit(1);
                     }else{
-                        // parent process
                         child_process.push_back(pid_1);
                         child_process.push_back(pid_2);
                         child_process.push_back(pid_3);
@@ -105,6 +117,7 @@ int main (int argc, char **argv) {
 
                         string input;
                         while(true){
+
                             getline(cin,input);
                             if(input.empty()) break;
                             
