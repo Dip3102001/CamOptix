@@ -46,6 +46,7 @@ def main():
                 # formattedPrinting(V,E,sys.stderr);
 
         except InvalidInput as e:
+            print(line);
             print(e,file=sys.stderr);
             continue;
         

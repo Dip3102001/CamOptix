@@ -35,18 +35,18 @@ def strToTup(str):
     return (float(nums[0]),float(nums[1]));
 
 def formattedPrinting(V,E,file):
-    print(f"V {len(V)}",file=file);
+    print(f"V {len(V)}",file=file,flush=True);
     
 
     E = list(E);
     
-    print("E {",end="",file=file);
+    print("E {",end="",file=file,flush=True);
     for edge in E[:-1]:
-        print(f"<{edge[0]+1},{edge[1]+1}>,",end="",file=file);
+        print(f"<{edge[0]+1},{edge[1]+1}>,",end="",file=file,flush=True);
     else:
         if len(E) > 0:
-            print(f"<{E[-1][0]+1},{E[-1][1]+1}>",end="",file=file);
-    print("}",file=file);
+            print(f"<{E[-1][0]+1},{E[-1][1]+1}>",end="",file=file,flush=True);
+    print("}",file=file,flush=True);
 
 def plot(V,E):
     pass

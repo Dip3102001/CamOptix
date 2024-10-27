@@ -79,7 +79,7 @@ class Argument{
 
             int opt;
             while((opt = getopt(argc, argv, "s:n:l:c:")) != -1){
-                // chage required to check for range
+                // change required to check for range
                 switch(opt){
                     case 's':
                         args["s"] = atoi(optarg);
@@ -125,8 +125,6 @@ class Argument{
 
 class LineSegment{
     private:
-        pair<int,int> st;
-        pair<int,int> en;
 
         double m;
         double c;
@@ -136,6 +134,8 @@ class LineSegment{
         }
 
     public:
+        pair<int,int> st;
+        pair<int,int> en;
         LineSegment(pair<int,int> st, pair<int,int> en){
             this->st = st;
             this->en = en;
@@ -170,8 +170,45 @@ class LineSegment{
                 x = __round__(x);
                 y = __round__(y);
 
-                return this->isBetween(x,y) || l0.isBetween(x,y);
+                return this->isBetween(x,y) && l0.isBetween(x,y);
             }
+        }
+
+        bool isIntersectIntersect(LineSegment l0){
+            if(this->m == l0.m){
+                if(this->m == INFINITY) return this->st.first == l0.st.first;
+                else return this->c == l0.c;
+            }else{
+                double x,y;
+
+                if(this->m == INFINITY || l0.m == INFINITY){
+                    if(this->m == INFINITY){
+                        x = this->st.first;
+                        y = l0.m * x + l0.c;
+                    }else{
+                        x = l0.st.first;
+                        y = this->m * x + this->c;
+                    }
+                }else{
+                    x = - ((this->c - l0.c) / (this->m - l0.m));
+                    y = this->m * x + this->c; 
+                }
+
+                x = __round__(x);
+                y = __round__(y);
+
+                return this->onBetween(x,y) && l0.onBetween(x,y);
+            }
+        }
+
+        bool onBetween(double x, double y){
+            double x1 = (st.first < en.first) ? st.first : en.first;
+            double x2 = (st.first < en.first) ? en.first : st.first;
+
+            double y1 = (st.second < en.second) ? st.second : en.second;
+            double y2 = (st.second < en.second) ? en.second : st.second;
+        
+            return ((x1 <= x && x <= x2) && (y1 <= y && y <= y2)); 
         }
 
         bool isBetween(double x, double y){
@@ -237,6 +274,19 @@ class Street{
 
             return str;
         }
+
+        bool operator/(Street &s){
+            for(int i=0;i<(int)this->ll.size()-1;i++){
+                LineSegment l1 = LineSegment(ll.at(i),ll.at(i+1));
+                for(int j=i+1;j<(int)s.ll.size()-1;j++){
+                    LineSegment l2 = LineSegment(s.ll.at(j),s.ll.at(j+1));
+                    if(l1.isIntersectIntersect(l2))
+                        return true;
+                }
+            }
+
+            return false;
+        }
 };
 
 class StreetBuilder{
@@ -281,18 +331,34 @@ class Map{
         vector<Street> streets;
         Argument &argument;
 
-    public:
-        Map(Argument args):argument(args){
-            for(int i=0;i<rand(2,this->argument.get("s"));i++){
-                streets.push_back(StreetBuilder(string(1,'A'+i),rand(1,this->argument.get("n")),this->argument.get("c")).build());
+        bool isIntersect(){
+            for(int i=0;i<streets.size();i++){
+                for(int j=i+1;j<streets.size();j++){
+                    if(streets[i]/streets[j])
+                        return true;
+                }
             }
+
+            return false;
         }
 
-        void driver(){ 
+    public:
+        Map(Argument args):argument(args){
+            do{
+                while(streets.size() != 0)
+                    streets.pop_back();
+                
+                for(int i=0;i<rand(2,this->argument.get("s"));i++){
+                    streets.push_back(StreetBuilder(string(1,'A'+i),rand(1,this->argument.get("n")),this->argument.get("c")).build());
+                }
+            }while(!isIntersect());
+        }
+
+        void driver(bool isCout=true){ 
             for(int i=0;i<(int)streets.size();i++){
-                cout<<"add "<<streets[i].str()<<endl;
+                ((isCout)?cout:cerr)<<"add "<<streets[i].str()<<endl;
             }
-            cout<<"gg"<<endl;
+            ((isCout)?cout:cerr)<<"gg"<<endl;
         }
 
         void destroy(){
