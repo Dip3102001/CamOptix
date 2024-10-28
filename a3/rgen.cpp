@@ -332,8 +332,8 @@ class Map{
         Argument &argument;
 
         bool isIntersect(){
-            for(int i=0;i<streets.size();i++){
-                for(int j=i+1;j<streets.size();j++){
+            for(int i=0;i<(int)streets.size();i++){
+                for(int j=i+1;j<(int)streets.size();j++){
                     if(streets[i]/streets[j])
                         return true;
                 }
@@ -362,7 +362,7 @@ class Map{
         }
 
         void destroy(){
-            for(int i=0;i<streets.size();i++)
+            for(int i=0;i<(int)streets.size();i++)
                 cout<<"rm"<<" "<<"\""<<(char)('A'+i)<<"\""<<endl;
         }
 };

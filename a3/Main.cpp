@@ -48,8 +48,8 @@ void Main::print_output(){
 
         std::ostringstream oss;
 
-        for(int i=0;i<path.size();i++){
-            if(i != path.size() -1)
+        for(int i=0;i<(int)path.size();i++){
+            if(i != (int)path.size() -1)
                 oss<<path[i]+1<<"-";
             else 
                 oss<<path[i]+1<<std::endl;
@@ -57,11 +57,11 @@ void Main::print_output(){
 
         std::cout<<oss.str();
 
-    }catch(InvalidInputException e){
+    }catch(InvalidInputException &e){
         std::cout<<e.what()<<std::endl;
-    }catch(NoShortestPathExist e){
+    }catch(NoShortestPathExist &e){
         std::cout<<e.what()<<std::endl;        
-    }catch(InvalidEdgeInputException e){
+    }catch(InvalidEdgeInputException &e){
         std::cout<<e.what()<<std::endl;
     }
 }
